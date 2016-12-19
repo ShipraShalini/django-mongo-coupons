@@ -40,7 +40,8 @@ campaign_detail = CampaignView.as_view({
 
 urlpatterns = [
     url(r'^coupons/$', coupon_list, name='coupon-list'),
-    url(r'^coupons/(?P<id>\w+)/$', coupon_detail, name='coupon-detail'),
+    url(r'^coupons/(?P<code>\w+)/$', coupon_detail, name='coupon-detail'),
     url(r'^campaign/$', campaign_list, name='campaign-list'),
     url(r'^campaign/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
+    url(r'^check/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
 ]

@@ -1,22 +1,43 @@
 from django.conf import settings
 from django.http import Http404
 from mongoengine import ValidationError
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_mongoengine.viewsets import ModelViewSet
 
+from django_mongo_coupons.coupon_settings import User
 from django_mongo_coupons.models import Coupon, Campaign, CouponUser
 from django_mongo_coupons.serializer import CouponGenSerializer, CampaignSerializer
-
-try:
-    User = settings.AUTH_USER_MODEL
-except AttributeError:
-    from django.contrib.auth.models import User
 
 
 class CouponGenerationView(ModelViewSet):
     model = Coupon
     serializer_class = CouponGenSerializer
+    lookup_field = 'code'
     queryset = Coupon.objects
+
+    def get_queryset(self):
+        return Coupon.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        amount = int(request.query_params.get('amount', None))
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        amount = instance.apply_coupon(amount)
+        return_dict = serializer.data
+        return_dict['amount'] = amount
+        return Response(return_dict)
+
+
+class CampaignView(ModelViewSet):
+    model = Campaign
+    serializer_class = CampaignSerializer
+    queryset = Campaign.objects
+    lookup_field = 'name'
+
+
+    def get_queryset(self):
+        return Campaign.objects.all()
 
 
 class CouponView(APIView):
@@ -56,13 +77,6 @@ class CouponView(APIView):
         if coupon.expired():
             raise ValidationError(_("This code is expired."))
         return code
-
-
-class CampaignView(ModelViewSet):
-    model = Campaign
-    serializer_class = CampaignSerializer
-    queryset = Campaign.objects
-    lookup_field = 'name'
 
 
 

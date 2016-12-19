@@ -1,7 +1,7 @@
 import string
 
 from django.conf import settings
-
+from django_mongoengine.mongo_auth.models import MongoUser
 
 COUPON_TYPES = getattr(settings, 'COUPONS_COUPON_TYPES', (
     ('monetary', 'Money based coupon'),
@@ -16,3 +16,11 @@ CODE_CHARS = getattr(settings, 'COUPONS_CODE_CHARS', string.ascii_letters+string
 SEGMENTED_CODES = getattr(settings, 'COUPONS_SEGMENTED_CODES', False)
 SEGMENT_LENGTH = getattr(settings, 'COUPONS_SEGMENT_LENGTH', 4)
 SEGMENT_SEPARATOR = getattr(settings, 'COUPONS_SEGMENT_SEPARATOR', "-")
+
+try:
+    User = settings.COUPON_USER
+except AttributeError:
+    try:
+        User = settings.AUTH_USER_MODEL
+    except AttributeError:
+        User = MongoUser
