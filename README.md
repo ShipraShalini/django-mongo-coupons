@@ -27,6 +27,11 @@ A mongoengine implementaion of [django-coupons](https://github.com/byteweaver/dj
     ]
     ```
 
+3. Include `mongo_coupons.urls` in urls.py
+    ```Python
+    urlpatterns += [ url(r'^coupons/', include(coupon_urls)) ]
+    ```
+
 ## Dependencies
 * mongoengine
 * django-mongoengine (unstable release)
@@ -47,12 +52,32 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
 
 ## Example
 
-    $ curl -H 'Accept: application/json; indent=4' 'http://localhost:8000/coupons/' -X POST -d '{
+###### Request
+
+    $     curl 'http://localhost:8000/coupons/coupons/'\
+         -H 'Accept: application/json; indent=4'\
+         -H 'Content-Type: application/json'\
+         -X POST -d '{
+             "value": 50,
+             "code": "",
+             "type": "percentage",
+             "user_limit": 3,
+             "campaign": "5857afaf86a5c70681a5b783",
+             "max_discount": "500"
+         }'
+    <sup>* campain: _id of the campain</sup>
+
+###### Response
+
+    {
+        "id": "58590b3d86a5c770e85db279",
         "value": 50,
-        "code": "",
+        "code": "KijWCoTI8xUI7tc",
+        "max_discount": 500,
         "type": "percentage",
         "user_limit": 3,
-        "campaign": "5249afavhe55c75703521a5b783",
-        "max_discount": "500"
-    }'
-<sup>* campain: _id of the campain</sup>
+        "usage_limit": 1,
+        "created_at": "2016-12-20T10:42:25.701545",
+        "valid_until": null,
+        "kwargs": null,
+        "campaign": "5857afaf86a5c70681a5b783"
