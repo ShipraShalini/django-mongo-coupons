@@ -54,7 +54,7 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
 
 ###### Request
 
-    $     curl 'http://localhost:8000/coupons/coupons/'\
+    $ curl 'http://localhost:8000/coupons/coupons/'\
          -H 'Accept: application/json; indent=4'\
          -H 'Content-Type: application/json'\
          -X POST -d '{
