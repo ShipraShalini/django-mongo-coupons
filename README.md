@@ -5,7 +5,7 @@
 
 A mongoengine implementaion of [django-coupons](https://github.com/byteweaver/django-coupons "Django-coupons"), A reuseable Django application for coupon gereration and handling.
 
-Is not compatible with relational db User
+Is not compatible with relational db Auth User
 
 
 ## Setup instructions
