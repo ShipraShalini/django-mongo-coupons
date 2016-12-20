@@ -5,13 +5,13 @@ from django.utils import timezone
 from django.test import TestCase
 
 
-from django_mongo_coupons.coupon_settings import (
+from mongo_coupons.coupon_settings import (
     CODE_LENGTH,
     CODE_CHARS,
     SEGMENT_LENGTH,
     SEGMENT_SEPARATOR,
 )
-from django_mongo_coupons.models import Coupon, Campaign
+from mongo_coupons.models import Coupon, Campaign
 
 
 class CouponTestCase(TestCase):

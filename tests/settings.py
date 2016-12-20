@@ -10,13 +10,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SECRET_KEY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 
-INTERNAL_IPS = ['127.0.0.1']
-
-LANGUAGE_CODE = 'en'
-
-LANGUAGES = (
-    ('en', 'English'),
-)
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale/'),
@@ -25,16 +18,18 @@ LOCALE_PATHS = (
 USE_TZ = True
 
 EXTERNAL_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+    'django_mongoengine.mongo_auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_mongoengine',
+    'mongoengine',
 ]
 
 INTERNAL_APPS = [
-    'coupons',
+    'mongo_coupons',
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
@@ -61,18 +56,19 @@ STATICFILES_DIRS = [
     ("prefix", os.path.join(BASE_DIR, 'tests', 'additional_static')),
 ]
 
-# Cache and database
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+MONGODB_DATABASES = {
+    "default": {
+        "name": 'mongo-coupons',
+        "host": '127.0.0.1',
+        # "username": MONGO_USER,
+        # "password": MONGO_PASSWORD,
+        "tz_aware": True, # if you using timezones in django (USE_TZ = True)
     }
 }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-    }
+    'default': {'ENGINE': 'django.db.backends.dummy'}
 }
 
 if django.VERSION[:2] < (1, 6):

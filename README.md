@@ -3,7 +3,7 @@
 <!--![build status](https://travis-ci.org/byteweaver/django-coupons.png)-->
 
 
-An implementaion of [django-coupons](https://github.com/byteweaver/django-coupons "Django-coupons"), A reuseable Django application for coupon gereration and handling with mongoengine
+An implementaion of [django-coupons](https://github.com/byteweaver/django-coupons "Django-coupons"), A reuseable Django application for coupon gereration and handling, with mongoengine
 
 
 
