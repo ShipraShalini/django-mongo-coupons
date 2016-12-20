@@ -47,7 +47,7 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
 
 ## Example
 
-    <!--$ curl -H 'Accept: application/json; indent=4' -u http://127.0.0.1:8000/coupons/ -d-->
+
 
 
     ```JSON
