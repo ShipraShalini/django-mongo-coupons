@@ -81,3 +81,4 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
         "valid_until": null,
         "kwargs": null,
         "campaign": "5857afaf86a5c70681a5b783"
+    }
