@@ -1,0 +1,7 @@
+Django>=1.10.0
+# django-mongoengine==0.2.1
+git+https://github.com/MongoEngine/django-mongoengine.git
+django-rest-framework-mongoengine>=3.0.0
+djangorestframework>=3.4.0
+mongoengine>=0.10.0
+six

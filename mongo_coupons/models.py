@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 # from django_mongoengine import Document as Document
 # from django_mongoengine import fields as dj
 from django_mongoengine.queryset import QuerySetManager
-from mongoengine import Document, fields
+from mongoengine import Document, fields, ValidationError, Q
 from django_mongo_coupons.coupon_settings import User
 
 from django_mongo_coupons.exceptions import CouponAlreadyUsed
@@ -70,13 +70,13 @@ class CouponManager(QuerySetManager):
         return coupons
 
     def used(self):
-        return self.exclude(users__redeemed_at__exists=True)
+        return CouponUser.exclude(coupon=self, redeemed_at__exists=True)
 
     def unused(self):
-        return self.filter(users__redeemed_at__exists=False)
+        return CouponUser.filter(Q(coupon=self)& (Q(redeemed_at__exists=False)|Q(redeemed_at__exists=False)))
 
     def expired(self):
-        return self.filter(valid_until__lt=timezone.now())
+        return self.filter(valid_until__lt=datetime.utcnow())
 
     def valid(self):
         return self.filer(Q(users__redeemed_at__exists=False) & Q(valid_until__gt=datetime.utcnow()))
@@ -118,7 +118,7 @@ class Coupon(Document):
     @property
     def is_redeemed(self):
         """ Returns true is a coupon is redeemed (completely for all users) otherwise returns false. """
-        return self.users.filter(
+        return CouponUser.filter(
             redeemed_at__exists=True
         ).count() >= self.user_limit and self.user_limit is not 0
 
@@ -145,23 +145,36 @@ class Coupon(Document):
         try:
             coupon_user = CouponUser.objects.get(coupon=self,
                                                  user=user)
-            print "coupon_user", coupon_user
         except CouponUser.DoesNotExist:
             try:  # silently fix unbouned or nulled coupon users
                 coupon_user = CouponUser.objects.get(user__exists=False)
                 coupon_user.user = user
-                print "here1"
             except CouponUser.DoesNotExist:
-                print "here2"
                 coupon_user = CouponUser(coupon=self, user=user)
-        if self.usage_limit and coupon_user.redeemed_at and len(coupon_user.redeemed_at) >= self.usage_limit:
-            raise CouponAlreadyUsed
+        if self.usage_limit and coupon_user.used and  coupon_user.used >= self.usage_limit:
+            raise ValidationError("This code has already been used.")
         coupon_user.redeemed_at.append(timezone.now())
+        coupon_user.used += 1
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
-        
-    def apply_coupon(self, amount):
+
+    def is_valid(self, user):
+        if user:
+            user = User.objects.get(id=user)
+        try:
+            coupon_user = CouponUser.objects.get(coupon=self,user=user)
+        except CouponUser.DoesNotExist:
+            return True
+        if self.usage_limit and coupon_user.redeemed_at and len(coupon_user.redeemed_at) >= self.usage_limit:
+            return False
+        return True
+
+    def apply_coupon(self, amount, user=None):
         '''amount: amount to be paid'''
+        if user:
+            if not self.is_valid(user):
+                raise ValidationError("This code has already been used.")
+
         if self.type == 'percentage':
             discount = amount * self.value / 100
             try:
@@ -171,7 +184,7 @@ class Coupon(Document):
                 pass
         else:
             discount = self.value
-        amount = amount - discount
+        amount -= discount
         return amount if amount > 0 else 0
 
 
@@ -195,11 +208,12 @@ class CouponUser(Document):
     user = fields.ReferenceField(User, dbref=True, null=True) #
     # , unique_with=coupon)
     redeemed_at = fields.ListField(fields.DateTimeField(verbose_name="Redeemed at", null=True))
+    used = fields.IntField(verbose_name="No of times coupon is reedemed", default=0)
     kwargs = fields.DictField(required=False, null=True)
 
     meta = {
         'collection': "coupon_user",
-        'indexes': ['coupon', 'user', 'redeemed_at' ]
+        'indexes': ['coupon', 'user', 'redeemed_at', 'used' ]
     }
 
     def __str__(self):
