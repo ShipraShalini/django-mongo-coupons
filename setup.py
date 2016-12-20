@@ -15,7 +15,7 @@ setup(
     # license=read('LICENSE'),
     author='shiprashalini',
     author_email='code.shipra@gmail.com',
-    url='https://github.com/ShipraShalini/django_mongo_coupons.git',
+    url='https://github.com/ShipraShalini/django-mongo-coupons.git',
     include_package_data=True,
     packages=find_packages(),
     classifiers=[
