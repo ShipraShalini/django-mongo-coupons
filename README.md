@@ -65,7 +65,8 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
              "campaign": "5857afaf86a5c70681a5b783",
              "max_discount": "500"
          }'
-    <sup>* campain: _id of the campain</sup>
+    
+   <sup>* campain: _id of the campain</sup>
 
 ###### Response
 
