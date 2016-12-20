@@ -1,7 +1,6 @@
 import string
-
 from django.conf import settings
-from django_mongoengine.mongo_auth.models import MongoUser
+from django.core.exceptions import ImproperlyConfigured
 
 COUPON_TYPES = getattr(settings, 'COUPONS_COUPON_TYPES', (
     ('monetary', 'Money based coupon'),
@@ -23,4 +22,9 @@ except AttributeError:
     try:
         User = settings.AUTH_USER_MODEL
     except AttributeError:
-        User = MongoUser
+        try:
+            from django_mongoengine.mongo_auth.models import MongoUser
+        except ImportError:
+            raise ImproperlyConfigured('No Coupon User Provided')
+        else:
+            User = MongoUser

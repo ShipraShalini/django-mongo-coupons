@@ -5,6 +5,7 @@
 
 A mongoengine implementaion of [django-coupons](https://github.com/byteweaver/django-coupons "Django-coupons"), A reuseable Django application for coupon gereration and handling.
 
+Is not compatible with relational db User
 
 
 ## Setup instructions
@@ -33,10 +34,10 @@ A mongoengine implementaion of [django-coupons](https://github.com/byteweaver/dj
     ```
 
 ## Dependencies
-* mongoengine
-* django-mongoengine (unstable release)
-* django-rest-framework
-* django-rest-framework-mongoengine
+* [mongoengine]('http://mongoengine.org/')
+* [django-rest-framework]('http://www.django-rest-framework.org/')
+* [django-rest-framework-mongoengine]('https://github.com/umutbozkurt/django-rest-framework-mongoengine.git')
+* [django-mongoengine]('https://github.com/MongoEngine/django-mongoengine.git') # unstable project, needed if`AUTH_USER_MODEL` is not defined.
 
 ## Supported use cases of coupons
 
@@ -81,3 +82,4 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
         "valid_until": null,
         "kwargs": null,
         "campaign": "5857afaf86a5c70681a5b783"
+    }
