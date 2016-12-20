@@ -1,6 +1,6 @@
 from rest_framework_mongoengine.serializers import DocumentSerializer
 
-from django_mongo_coupons.models import Coupon, Campaign, CouponUser
+from mongo_coupons.models import Coupon, Campaign, CouponUser
 
 
 class CouponGenSerializer(DocumentSerializer):

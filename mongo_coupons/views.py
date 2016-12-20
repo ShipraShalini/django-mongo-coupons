@@ -1,13 +1,10 @@
-from django.conf import settings
-from django.http import Http404
 from mongoengine import ValidationError
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_mongoengine.viewsets import ModelViewSet, GenericViewSet
 
-from django_mongo_coupons.models import Coupon, Campaign, CouponUser
-from django_mongo_coupons.serializer import CouponGenSerializer, CampaignSerializer
+from mongo_coupons.models import Coupon, Campaign, CouponUser
+from mongo_coupons.serializer import CouponGenSerializer, CampaignSerializer
 
 
 class CouponGenerationView(CreateModelMixin, GenericViewSet):

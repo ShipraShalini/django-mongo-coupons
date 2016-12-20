@@ -1,7 +1,7 @@
 import os
 from setuptools import setup, find_packages
 
-import django_mongo_coupons
+import mongo_coupons
 
 
 def read(fname):
@@ -10,7 +10,7 @@ def read(fname):
 setup(
     name='django-mongo-coupons',
     # packages = ['django-mongo-coupons'],
-    version=django_mongo_coupons.__version__,
+    version=mongo_coupons.__version__,
     description='Django-coupons with mongoengine',
     long_description=read('README.md'),
     # license=read('LICENSE'),

@@ -1,22 +1,16 @@
 import random
-from bson import ObjectId
 
 from datetime import datetime
 
-from django.conf import settings
 from django.db import IntegrityError
-from django.db import models
 from django.dispatch import Signal
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-# from django_mongoengine import Document as Document
-# from django_mongoengine import fields as dj
 from django_mongoengine.queryset import QuerySetManager
 from mongoengine import Document, fields, ValidationError, Q
-from django_mongo_coupons.coupon_settings import User
+from mongo_coupons.coupon_settings import User
 
-from django_mongo_coupons.exceptions import CouponAlreadyUsed
 
 
 from .coupon_settings import (
@@ -28,11 +22,6 @@ from .coupon_settings import (
     SEGMENT_SEPARATOR,
 )
 
-
-# try:
-#     user_model = settings.AUTH_USER_MODEL
-# except AttributeError:
-#     from django.contrib.auth.models import User as user_model
 redeem_done = Signal(providing_args=["coupon"])
 
 

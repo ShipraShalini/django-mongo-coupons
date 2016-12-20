@@ -1,7 +1,7 @@
 from mongoengine import ValidationError
 from rest_framework_mongoengine.serializers import DocumentSerializer
 
-from django_mongo_coupons.models import Coupon, CouponUser
+from mongo_coupons.models import Coupon, CouponUser
 from django.utils.translation import ugettext_lazy as _
 
 
