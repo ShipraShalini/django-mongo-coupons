@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from mongo_coupons.views import CouponGenerationView, CampaignView
+from mongo_coupons.views import CouponView, CampaignView
 
-coupon_list = CouponGenerationView.as_view({
+coupon_list = CouponView.as_view({
     'get': 'list',
     'post': 'create'
 })
-coupon_detail = CouponGenerationView.as_view({
+coupon_detail = CouponView.as_view({
     'get': 'retrieve',
     'put': 'update',
     'delete': 'destroy'
@@ -39,9 +39,9 @@ campaign_detail = CampaignView.as_view({
 
 
 urlpatterns = [
-    url(r'^coupons/$', coupon_list, name='coupon-list'),
-    url(r'^coupons/(?P<code>\w+)/$', coupon_detail, name='coupon-detail'),
-    url(r'^campaign/$', campaign_list, name='campaign-list'),
-    url(r'^campaign/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
-    url(r'^check/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
+    url(r'coupons/$', coupon_list, name='coupon-list'),
+    url(r'coupons/(?P<code>\w+)/$', coupon_detail, name='coupon-detail'),
+    url(r'campaign/$', campaign_list, name='campaign-list'),
+    url(r'campaign/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
+    url(r'check/(?P<name>\w+)/$', campaign_detail, name='campaign-detail'),
 ]

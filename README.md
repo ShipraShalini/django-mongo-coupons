@@ -47,17 +47,12 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
 
 ## Example
 
-
-
-
-    ```JSON
-    {
-        "value": 50,
-        "code": "",
-        "type": "percentage",
-        "user_limit": 3,
-        "campaign": "5249afavhe55c75703521a5b783",
-        "max_discount": "500"
-    }
-    ```
+$ curl -H 'Accept: application/json; indent=4' 'http://localhost:8000/coupons/' -X POST -d '{
+    "value": 50,
+    "code": "",
+    "type": "percentage",
+    "user_limit": 3,
+    "campaign": "5249afavhe55c75703521a5b783",
+    "max_discount": "500"
+}'
 <sup>* campain: _id of the campain</sup>

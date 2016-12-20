@@ -1,5 +1,5 @@
 from mongoengine import ValidationError
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin
 from rest_framework.views import APIView
 from rest_framework_mongoengine.viewsets import ModelViewSet, GenericViewSet
 
@@ -7,7 +7,7 @@ from mongo_coupons.models import Coupon, Campaign, CouponUser
 from mongo_coupons.serializer import CouponGenSerializer, CampaignSerializer
 
 
-class CouponGenerationView(CreateModelMixin, GenericViewSet):
+class CouponView(ModelViewSet):
     model = Coupon
     serializer_class = CouponGenSerializer
     lookup_field = 'code'
@@ -27,7 +27,7 @@ class CampaignView(ModelViewSet):
         return Campaign.objects.all()
 
 
-class CouponView(APIView):
+class CouponValidityView(APIView):
 
     def get(self, request, **kwargs):
         code = request.data['code']
