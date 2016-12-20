@@ -34,10 +34,10 @@ Is not compatible with relational db Auth User
     ```
 
 ## Dependencies
-* [mongoengine]('http://mongoengine.org/')
-* [django-rest-framework]('http://www.django-rest-framework.org/')
-* [django-rest-framework-mongoengine]('https://github.com/umutbozkurt/django-rest-framework-mongoengine.git')
-* [django-mongoengine]('https://github.com/MongoEngine/django-mongoengine.git') # unstable project, needed if`AUTH_USER_MODEL` is not defined.
+* [mongoengine](http://mongoengine.org/)
+* [django-rest-framework](http://www.django-rest-framework.org/)
+* [django-rest-framework-mongoengine](https://github.com/umutbozkurt/django-rest-framework-mongoengine.git)
+* [django-mongoengine](https://github.com/MongoEngine/django-mongoengine.git) # unstable project, needed if`AUTH_USER_MODEL` is not defined.
 
 ## Supported use cases of coupons
 
