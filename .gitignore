@@ -6,3 +6,5 @@ include/
 lib/
 manage.py
 pip-selfcheck.json
+dist/
+django_mongo_coupons.egg-info/
