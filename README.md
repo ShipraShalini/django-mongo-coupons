@@ -14,8 +14,18 @@ An implementaion of [django-coupons](https://github.com/byteweaver/django-coupon
    $ pip install django-mongo-coupons
    ```
 
-2. Add `'mongo-coupons'` to `INSTALLED_APPS` in `settings.py`.
+2. Add `'mongo_coupons'` to `INSTALLED_APPS` in `settings.py`.
 
+
+```Python
+INSTALLED_APPS = [
+    ...
+    'mongoengine'
+    'rest_framework_mongoengine',
+    'mongo_coupons'
+    ...
+]
+```
 
 ## Dependencies
  * mongoengine
@@ -33,3 +43,18 @@ Supports all coupons supported by  [django-coupons](https://github.com/byteweave
  * users list: coupon can be used by a defined list of users, each once.
  * unlimited: coupon can be used unlimited times, but only once by the same user.
  * usage limited: type of coupon can be any of the above but can be used only n times
+
+
+## Example
+
+    $ curl -H 'Accept: application/json; indent=4' -u http://127.0.0.1:8000/coupons/
+```JSON
+{
+    "value": 50,
+    "code": "",
+    "type": "percentage",
+    "user_limit": 3,
+    "campaign": "5249afavhe55c75703521a5b783", (_id of campaign)
+    "max_discount": "500"
+}
+```
