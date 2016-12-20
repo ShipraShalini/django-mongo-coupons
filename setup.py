@@ -9,7 +9,6 @@ def read(fname):
 
 setup(
     name='django-mongo-coupons',
-    packages=['mongo-coupons'],
     version=mongo_coupons.__version__,
     description='Django-coupons with mongoengine',
     long_description=read('README.md'),
@@ -18,7 +17,7 @@ setup(
     author_email='code.shipra@gmail.com',
     url='https://github.com/ShipraShalini/django_mongo_coupons.git',
     include_package_data=True,
-    # packages=find_packages(),
+    packages=find_packages(),
     classifiers=[
         'Framework :: Django',
         'Intended Audience :: Developers',
