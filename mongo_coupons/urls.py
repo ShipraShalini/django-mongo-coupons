@@ -37,7 +37,6 @@ campaign_detail = CampaignView.as_view({
     'delete': 'destroy'
 })
 
-
 urlpatterns = [
     url(r'coupons/$', coupon_list, name='coupon-list'),
     url(r'coupons/(?P<code>\w+)/$', coupon_detail, name='coupon-detail'),

@@ -11,8 +11,6 @@ from django_mongoengine.queryset import QuerySetManager
 from mongoengine import Document, fields, ValidationError, Q
 from mongo_coupons.coupon_settings import User
 
-
-
 from .coupon_settings import (
     COUPON_TYPES,
     CODE_LENGTH,
@@ -62,7 +60,7 @@ class CouponManager(QuerySetManager):
         return CouponUser.exclude(coupon=self, redeemed_at__exists=True)
 
     def unused(self):
-        return CouponUser.filter(Q(coupon=self)& (Q(redeemed_at__exists=False)|Q(redeemed_at__exists=False)))
+        return CouponUser.filter(Q(coupon=self) & (Q(redeemed_at__exists=False) | Q(redeemed_at__exists=False)))
 
     def expired(self):
         return self.filter(valid_until__lt=datetime.utcnow())
@@ -73,10 +71,10 @@ class CouponManager(QuerySetManager):
 
 # @python_2_unicode_compatible
 class Coupon(Document):
-    value = fields.IntField(verbose_name="Value", help_text=_("Arbitrary coupon value"))
+    value = fields.IntField(verbose_name="Value", required=True, help_text=_("Arbitrary coupon value"))
     code = fields.StringField(required=False, verbose_name="Code", unique=True, max_length=30, null=True)
     max_discount = fields.IntField(required=False, verbose_name="Maximum discount", null=True)
-    type = fields.StringField(verbose_name="Type", max_length=20, choices=COUPON_TYPES)
+    type = fields.StringField(verbose_name="Type", required=True, max_length=20, choices=COUPON_TYPES)
     user_limit = fields.IntField(verbose_name="User limit", default=1, min_value=0)
     usage_limit = fields.IntField(verbose_name="Usage limit per user", default=1, min_value=0)
     created_at = fields.DateTimeField(verbose_name="Created at", default=datetime.utcnow())
@@ -140,7 +138,7 @@ class Coupon(Document):
                 coupon_user.user = user
             except CouponUser.DoesNotExist:
                 coupon_user = CouponUser(coupon=self, user=user)
-        if self.usage_limit and coupon_user.used and  coupon_user.used >= self.usage_limit:
+        if self.usage_limit and coupon_user.used and coupon_user.used >= self.usage_limit:
             raise ValidationError("This code has already been used.")
         coupon_user.redeemed_at.append(timezone.now())
         coupon_user.used += 1
@@ -151,7 +149,7 @@ class Coupon(Document):
         if user:
             user = User.objects.get(id=user)
         try:
-            coupon_user = CouponUser.objects.get(coupon=self,user=user)
+            coupon_user = CouponUser.objects.get(coupon=self, user=user)
         except CouponUser.DoesNotExist:
             return True
         if self.usage_limit and coupon_user.redeemed_at and len(coupon_user.redeemed_at) >= self.usage_limit:
@@ -194,7 +192,7 @@ class Campaign(Document):
 @python_2_unicode_compatible
 class CouponUser(Document):
     coupon = fields.ReferenceField(Coupon, dbref=True)
-    user = fields.ReferenceField(User, dbref=True, null=True) #
+    user = fields.ReferenceField(User, dbref=True, null=True)  #
     # , unique_with=coupon)
     redeemed_at = fields.ListField(fields.DateTimeField(verbose_name="Redeemed at", null=True))
     used = fields.IntField(verbose_name="No of times coupon is reedemed", default=0)
@@ -202,7 +200,7 @@ class CouponUser(Document):
 
     meta = {
         'collection': "coupon_user",
-        'indexes': ['coupon', 'user', 'redeemed_at', 'used' ]
+        'indexes': ['coupon', 'user', 'redeemed_at', 'used']
     }
 
     def __str__(self):

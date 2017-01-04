@@ -22,13 +22,12 @@ class CampaignView(ModelViewSet):
     serializer_class = CampaignSerializer
     queryset = Campaign.objects
     lookup_field = 'name'
-    
+
     def get_queryset(self):
         return Campaign.objects.all()
 
 
 class CouponValidityView(APIView):
-
     def get(self, request, **kwargs):
         code = request.data['code']
         if 'types' in kwargs:
@@ -68,6 +67,3 @@ class CouponValidityView(APIView):
         if coupon.expired():
             raise ValidationError("This code is expired.")
         return code
-
-
-
