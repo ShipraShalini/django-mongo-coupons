@@ -5,7 +5,6 @@ from datetime import datetime
 from django.db import IntegrityError
 from django.dispatch import Signal
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_mongoengine.queryset import QuerySetManager
 from mongoengine import Document, fields, ValidationError, Q
@@ -99,8 +98,8 @@ class Coupon(Document):
             self.code = Coupon.generate_code()
         super(Coupon, self).save(*args, **kwargs)
 
-    def expired(self):
-        return self.valid_until is not None and self.valid_until < timezone.now()
+    def is_expired(self):
+        return self.valid_until is not None and self.valid_until < datetime.utcnow()
 
     @property
     def is_redeemed(self):
@@ -140,7 +139,7 @@ class Coupon(Document):
                 coupon_user = CouponUser(coupon=self, user=user)
         if self.usage_limit and coupon_user.used and coupon_user.used >= self.usage_limit:
             raise ValidationError("This code has already been used.")
-        coupon_user.redeemed_at.append(timezone.now())
+        coupon_user.redeemed_at.append(datetime.utcnow())
         coupon_user.used += 1
         coupon_user.save()
         redeem_done.send(sender=self.__class__, coupon=self)
@@ -158,6 +157,10 @@ class Coupon(Document):
 
     def apply_coupon(self, amount, user=None):
         '''amount: amount to be paid'''
+
+        if self.is_expired:
+            raise ValidationError("This code has been expired")
+
         if user:
             if not self.is_valid(user):
                 raise ValidationError("This code has already been used.")
